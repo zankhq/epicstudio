@@ -1,0 +1,137 @@
+---
+let { opacity } = Astro.props;
+---
+
+<div id="bg-wrapper" class=`wrapper light fixed -z-10 w-full h-full box-border bg-stone-100 opacity-${opacity}`>
+	<div class="threejs-world relative w-full h-full overflow-hidden"></div>
+</div>
+
+<script>
+	import * as THREE from "three";
+	import { OrbitControls } from "three-stdlib/controls/OrbitControls";
+	import { gsap } from "gsap";
+
+	document.addEventListener("astro:page-load", function () {
+		// Define the World component
+		function World($el) {
+			if (!$el) {
+				return;
+			}
+
+			const elements = {
+				scene: new THREE.Scene(),
+				camera: new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000),
+				renderer: new THREE.WebGLRenderer({ antialias: true, alpha: true }),
+			};
+
+			let { scene, camera, renderer } = elements;
+
+			//initial
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setClearColor(0xffffff, 0);
+			renderer.setPixelRatio(window.innerWidth / window.innerHeight);
+
+			$el.append(renderer.domElement);
+			camera.position.set(0, 0, 500);
+			scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+
+			//add control
+			let controls = new OrbitControls(camera, renderer.domElement);
+
+			if (controls) {
+				controls.enabled = false;
+				controls.minDistance = 700;
+				controls.maxDistance = 700;
+				controls.maxPolarAngle = Math.PI / 2;
+			}
+
+			//create geo
+			var geometry = new THREE.DodecahedronGeometry(3, 0);
+			var material = new THREE.MeshPhongMaterial({
+				color: 0x00000,
+				opacity: 0.3,
+				transparent: true,
+				flatShading: true,
+			});
+
+			//add to scene with group
+			var group = new THREE.Group();
+			for (var i = 0; i < 50; i++) {
+				var mesh = new THREE.Mesh(geometry, material);
+				mesh.position.x = Math.random() * 1000 - 500;
+				mesh.position.y = Math.random() * 600 - 300;
+				mesh.position.z = Math.random() * 1000 - 200;
+				mesh.updateMatrix();
+				mesh.matrixAutoUpdate = false;
+				group.add(mesh);
+			}
+			scene.add(group);
+
+			//light
+			var light = new THREE.DirectionalLight(0xffffff);
+			light.position.set(1, 1, 1);
+			scene.add(light);
+			var light1 = new THREE.DirectionalLight(0x141414);
+			light1.position.set(-1, -1, -1);
+			scene.add(light1);
+			var light2 = new THREE.AmbientLight(0x141414, 0.3);
+			scene.add(light2);
+
+			renderer.render(scene, camera);
+			var animate = function () {
+				group.rotation.x += 0.0002;
+				group.rotation.y += 0.0002;
+				renderer.render(scene, camera);
+				controls.update();
+				requestAnimationFrame(animate);
+			};
+			animate();
+
+			const handlePointerMove = ({ clientX, clientY }) => {
+				const centerPoint = {
+					x: window.innerWidth / 2,
+					y: window.innerHeight / 2,
+				};
+				const z = (clientX - centerPoint.x) / 900;
+				const x = (clientY - centerPoint.y) / 900;
+				gsap.to(group.rotation, {
+					x: -x,
+					y: -z,
+					duration: 1,
+					ease: "power2.out",
+					onUpdate: renderer.render(scene, camera),
+				});
+			};
+
+			const handleWindowResize = () => {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.render(scene, camera);
+			};
+
+			const handleDeviceOrientation = ({ acceleration, accelerationIncludingGravity }) => {
+				const { x, y } = accelerationIncludingGravity || acceleration;
+				gsap.to(group.rotation, {
+					x: Math.floor(-y) / 3,
+					y: Math.floor(-x) / 3,
+					duration: 1,
+					ease: "power2.out",
+					onUpdate: renderer.render(scene, camera),
+				});
+			};
+
+			window.addEventListener("pointermove", handlePointerMove);
+			window.addEventListener("resize", handleWindowResize);
+			window.addEventListener("devicemotion", handleDeviceOrientation, true);
+
+			return $el;
+		}
+
+		const wrapper = document.getElementById("bg-wrapper");
+
+		const $world = wrapper?.getElementsByClassName("threejs-world")[0];
+
+		const worldElement = World($world);
+	});
+</script>

@@ -1,0 +1,10 @@
+---
+import Project from "@components/Project.astro";
+import Container from "@components/Container.astro";
+
+let { items } = Astro.props;
+---
+
+<Container class="mx-auto flex flex-col items-center justify-center gap-16 md:gap-32 lg:gap-44">
+	{items.map((item) => <Project item={item} full={false} />)}
+</Container>

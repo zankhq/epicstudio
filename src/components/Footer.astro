@@ -1,0 +1,52 @@
+---
+import Container from "@components/Container.astro";
+---
+
+<footer class="py-12 pt-14 sm:pt-16 lg:pt-40">
+	<Container>
+		<div class="mx-auto">
+			<div class="relative mx-auto overflow-hidden bg-stone-800 max-w-7xl">
+				<div class="relative px-8 py-12 md:p-16 xl:p-24">
+					<div class="max-w-2xl mx-auto text-center">
+						<h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">Subscribe to our newsletter</h2>
+					</div>
+
+					<form method="POST" class="flex flex-col max-w-3xl mx-auto mt-8 space-y-4 xl:mt-12 md:flex-row md:space-y-0 md:space-x-4">
+						<div class="flex-1">
+							<label for="" class="sr-only">First name</label>
+							<input
+								type="text"
+								name=""
+								id=""
+								placeholder="First name"
+								class="block w-full px-4 py-4 text-base font-normal text-white placeholder-white bg-transparent border border-white focus:ring-1 focus:ring-white focus:bg-stone-100/10 focus:outline-none"
+							/>
+						</div>
+
+						<div class="flex-1">
+							<label for="" class="sr-only">Email address</label>
+							<input
+								type="email"
+								name=""
+								id=""
+								placeholder="Email address"
+								class="block w-full px-4 py-4 text-base font-normal text-white placeholder-white bg-transparent border border-white focus:ring-1 focus:ring-white focus:bg-stone-100/10 focus:outline-none"
+							/>
+						</div>
+
+						<button
+							data-cursor-hover
+							data-hover-title
+							type="submit"
+							class="inline-flex items-center justify-center px-10 py-4 text-base font-medium text-white transition-all duration-200 bg-stone-900 border border-transparent hover:bg-stone-100 hover:text-stone-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 focus:ring-offset-blue-600">
+							Subscribe Now
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="mx-auto max-w-4xl pt-12 lg:pt-24">
+			<div class="flex justify-center font-light">Copyright © yourcompany</div>
+		</div>
+	</Container>
+</footer>

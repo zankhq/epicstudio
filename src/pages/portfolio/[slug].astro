@@ -1,0 +1,101 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Project from "@components/Project.astro";
+import Container from "@components/Container.astro";
+import Title from "@components/Title.astro";
+
+// Generate a new path for every collection entry
+export async function getStaticPaths() {
+	const portfolioEntries = await getCollection("portfolio");
+	return portfolioEntries.map((entry, index) => {
+		const prev = index > 0 ? portfolioEntries[index - 1] : portfolioEntries[portfolioEntries.length - 1];
+		const next = index < portfolioEntries.length - 1 ? portfolioEntries[index + 1] : portfolioEntries[1];
+		return {
+			params: { slug: entry.slug },
+			props: {
+				entry,
+				prev,
+				next,
+			},
+		};
+	});
+}
+// Get the entry directly from the prop on render
+const { entry, prev, next } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Layout title={entry.data.title}>
+	<!-- <BackgroundEffect opacity={20} /> -->
+	<Container>
+		<Project item={entry} full={true} />
+		<div class="mx-auto bg-stone-100 prose prose-lg max-w-4xl py-14 lg:py-20 px-3 text-base leading-7 text-gray-700">
+			<h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"><Title title={entry.data.title} /></h1>
+			<Content />
+		</div>
+		<a href="/" class="flex justify-center mt-10">
+			<span
+				class="portfolio-tilt py-4 px-8 bg-stone-800 text-stone-50 hover:text-stone-100 hover:bg-stone-900 text-3xl inline-flex justify-center uppercase font-bold"
+				data-cursor-hover
+				data-hover-title>
+				<span class="inner">Back</span>
+			</span>
+		</a>
+	</Container>
+</Layout>
+
+<style>
+	.portfolio-navigator a:first-child {
+		border-right: 10px solid;
+	}
+	.portfolio-navigator a:last-child {
+		border-left: 10px solid;
+	}
+	.portfolio-navigator img {
+		filter: opacity(0.2);
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+	.portfolio-navigator a:hover img {
+		filter: opacity(0.4);
+	}
+	.portfolio-tilt {
+		box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0.4);
+		transform-style: preserve-3d;
+		transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+
+		&:hover {
+			box-shadow: 0 40px 70px -15px rgba(0, 0, 0, 0.5);
+
+			.inner {
+				transform: translateZ(5px);
+				transition-duration: 300ms;
+			}
+		}
+	}
+</style>
+
+<script>
+	import VanillaTilt from "vanilla-tilt";
+
+	document.addEventListener("astro:page-load", function () {
+		const tilt = document.querySelectorAll(".portfolio-tilt");
+		VanillaTilt.init(tilt, {
+			reverse: true,
+			max: 0.1,
+			speed: 1000,
+			scale: 1.01,
+			reset: true,
+			perspective: 300,
+			transition: true,
+			"glare-prerender": false,
+			gyroscope: true,
+			gyroscopeMinAngleX: -40,
+			gyroscopeMaxAngleX: 40,
+			gyroscopeMinAngleY: -40,
+			gyroscopeMaxAngleY: 40,
+		});
+	});
+</script>

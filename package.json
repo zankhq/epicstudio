@@ -1,0 +1,46 @@
+{
+	"name": "zank-studio",
+	"type": "module",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "astro dev --host",
+		"start": "astro dev",
+		"build": "astro build",
+		"build:localized": "npm run i18n:generate && npm run build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"i18n:generate": "astro-i18next generate && npm run script:change-language-in-dynamic-pages",
+		"script:change-language-in-dynamic-pages": "node ./src/scripts/change-language-in-dynamic-pages.js"
+	},
+	"dependencies": {
+		"@alpinejs/focus": "^3.13.0",
+		"@astrojs/rss": "^3.0.0",
+		"@fontsource-variable/inter": "^5.0.8",
+		"alpinejs": "^3.13.0",
+		"astro": "^3.0.3",
+		"astro-i18next": "^1.0.0-beta.21",
+		"astro-netlify-cms": "^0.5.4",
+		"astro-seo": "^0.8.0",
+		"gsap": "^3.12.2",
+		"tailwindcss": "^3.3.3",
+		"three": "^0.155.0",
+		"three-stdlib": "^2.25.0",
+		"vanilla-tilt": "^1.8.1"
+	},
+	"devDependencies": {
+		"@astrojs/alpinejs": "^0.3.0",
+		"@astrojs/mdx": "^1.0.0",
+		"@astrojs/sitemap": "^3.0.0",
+		"@astrojs/tailwind": "^5.0.0",
+		"@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
+		"@tailwindcss/typography": "^0.5.9",
+		"@types/alpinejs": "^3.7.2",
+		"astro-icon": "^0.8.1",
+		"dotenv": "^16.3.1",
+		"postcss-nesting": "^12.0.1",
+		"prettier": "3.0.3",
+		"prettier-plugin-astro": "^0.12.0",
+		"workbox-window": "^7.0.0"
+	}
+}

@@ -1,0 +1,291 @@
+<div id="cursor" x-data="{ isTouchDevice: 'ontouchstart' in window }" x-show="!isTouchDevice">
+	<div id="ball"></div>
+</div>
+
+<script>
+	import { gsap, Power2 } from "gsap";
+
+	document.addEventListener("astro:page-load", () => {
+		var mouse = { x: 0, y: 0 };
+		var pos = { x: 0, y: 0 };
+		var ratio = 0.65;
+		var active = false;
+		let activeCount = 0;
+		var ball = document.getElementById("ball");
+		var magicCursor = document.getElementById("cursor");
+
+		gsap.set(ball, { xPercent: -50, yPercent: -50, scale: 0.5, borderWidth: "3px" });
+
+		document.addEventListener("mousemove", mouseMove);
+
+		function updatePosition() {
+			if (!active) {
+				pos.x += (mouse.x - pos.x) * ratio;
+				pos.y += (mouse.y - pos.y) * ratio;
+
+				gsap.to(ball, { duration: 0.4, x: pos.x, y: pos.y });
+			}
+		}
+
+		function mouseMove(e) {
+			var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+			mouse.x = e.pageX;
+			mouse.y = e.pageY - scrollTop;
+		}
+
+		gsap.ticker.add(updatePosition);
+
+		let parallaxWraps = document.querySelectorAll("[data-cursor-hover]");
+
+		parallaxWraps.forEach(function (wrap) {
+			let title;
+			let $titleEl;
+
+			wrap.addEventListener("mouseenter", function (e) {
+				if (wrap && wrap.hasAttribute("data-hover-title")) {
+					title = wrap.getAttribute("data-hover-title");
+
+					$titleEl = document.createElement("p");
+
+					if (title) {
+						$titleEl.classList.add("center-first");
+						$titleEl.innerText = title;
+					}
+
+					ball?.append($titleEl);
+				}
+
+				if ($titleEl) {
+					gsap.to(ball, {
+						duration: 0.3,
+						borderWidth: "2px",
+						scale: 1.4,
+						borderColor: "rgba(255,255,255,0)",
+						backgroundColor: "rgba(128,128,128,0.5)",
+					});
+
+					ball?.classList.add("with-blur");
+
+					ball?.append($titleEl);
+				} else {
+					gsap.to(this, { duration: 0.3, scale: 2 });
+					gsap.to(ball, { duration: 0.3, scale: 0.9, borderWidth: "2px", opacity: 1 });
+
+					let children = wrap.children;
+					for (let i = 0; i < children.length; i++) {
+						gsap.to(children[i], { duration: 0.3, scale: 0.5 });
+					}
+				}
+
+				if (wrap && wrap.hasAttribute("data-cursor-parallax")) {
+					active = true;
+					activeCount++;
+				}
+			});
+
+			wrap.addEventListener("mouseleave", function (e) {
+				gsap.to(this, { duration: 0.3, scale: 1 });
+				gsap.to(ball, { duration: 0.3, scale: 0.5, borderWidth: "4px", opacity: 1, borderColor: "#999999", backgroundColor: "transparent" });
+
+				let children = wrap.children;
+				for (let i = 0; i < children.length; i++) {
+					gsap.to(children[i], { duration: 0.3, scale: 1, x: 0, y: 0 });
+				}
+
+				if ($titleEl) {
+					ball?.classList.remove("with-blur");
+					ball?.removeChild($titleEl);
+				}
+
+				if (wrap && wrap.hasAttribute("data-cursor-parallax")) {
+					activeCount--;
+					if (activeCount === 0) {
+						// Only set active to false if no elements are being hovered
+						active = false;
+					}
+				}
+			});
+
+			wrap.addEventListener("mousemove", function (e) {
+				if (wrap && wrap.hasAttribute("data-cursor-parallax")) {
+					parallaxCursor(e, this, 2);
+					callParallax(e, this);
+				}
+			});
+
+			function callParallax(e, parent) {
+				let parallaxElement = parent.querySelector("[data-cursor-parallax-elelement]");
+				parallaxIt(e, parent, parallaxElement, 20);
+			}
+
+			function parallaxIt(e, parent, target, movement) {
+				var boundingRect = parent.getBoundingClientRect();
+				var relX = e.pageX - boundingRect.left;
+				var relY = e.pageY - boundingRect.top;
+				var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+				gsap.to(target, {
+					duration: 0.3,
+					x: ((relX - boundingRect.width / 2) / boundingRect.width) * movement,
+					y: ((relY - boundingRect.height / 2 - scrollTop) / boundingRect.height) * movement,
+					ease: Power2.easeOut,
+				});
+			}
+
+			function parallaxCursor(e, parent, movement) {
+				var rect = parent.getBoundingClientRect();
+				var relX = e.pageX - rect.left;
+				var relY = e.pageY - rect.top;
+				var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+				pos.x = rect.left + rect.width / 2 + (relX - rect.width / 2) / movement;
+				pos.y = rect.top + rect.height / 2 + (relY - rect.height / 2 - scrollTop) / movement;
+				gsap.to(ball, { duration: 0.3, x: pos.x, y: pos.y });
+			}
+		});
+
+		magicCursor?.classList.add("active");
+	});
+</script>
+
+<style is:global>
+	#cursor {
+		position: absolute;
+		left: 0;
+		top: 0;
+		opacity: 0;
+		width: 30px;
+		height: 30px;
+		pointer-events: none;
+		z-index: 10000;
+		-webkit-transition: opacity 0.2s ease-in-out 0.5s;
+		transition: opacity 0.2s ease-in-out 0.5s;
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	#cursor.active {
+		animation: fadeIn 2s forwards;
+		-webkit-animation: fadeIn 2s forwards;
+		-moz-animation: fadeIn 2s forwards;
+		-o-animation: fadeIn 2s forwards;
+		-ms-animation: fadeIn 2s forwards;
+	}
+
+	.hidden-ball #cursor {
+		opacity: 0 !important;
+		visibility: hidden;
+	}
+
+	#ball {
+		position: fixed;
+		width: 80px;
+		height: 80px;
+		border: 2px solid #999999;
+		border-radius: 50%;
+		pointer-events: none;
+		opacity: 1;
+		box-sizing: border-box;
+		-webkit-transform: scale(0.5);
+		transform: scale(0.5);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	#ball.with-blur {
+		-webkit-backdrop-filter: blur(5px);
+		backdrop-filter: blur(5px);
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+
+	#ball:before {
+		font: var(--fa-font-solid);
+		content: "\f106";
+		font-size: 14px;
+		width: 8px;
+		height: 16px;
+		line-height: 16px;
+		text-align: center;
+		position: absolute;
+		left: 32px;
+		top: -42px;
+		color: #999;
+		opacity: 0;
+		transform: translateY(-20px);
+		-webkit-transform: translateY(-20px);
+		transition: all 0.15s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+	}
+
+	#ball::after {
+		font: var(--fa-font-solid);
+		content: "\f107";
+		font-size: 14px;
+		width: 8px;
+		height: 16px;
+		line-height: 16px;
+		text-align: center;
+		position: absolute;
+		left: 32px;
+		top: 100px;
+		color: #999;
+		opacity: 0;
+		transform: translateY(20px);
+		-webkit-transform: translateY(20px);
+		transition: all 0.15s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+	}
+
+	#ball p {
+		color: #fff;
+		width: auto;
+		height: 16px;
+		line-height: 16px;
+		padding-top: 0px;
+		padding-left: 0px;
+		box-sizing: border-box;
+		margin: 0 auto;
+		margin-bottom: 0;
+		text-align: center;
+		font-size: 10px;
+		font-weight: 600;
+		display: flex;
+		flex-direction: column;
+		align-self: center;
+		opacity: 1;
+		position: relative;
+		transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+	}
+
+	.light-content #ball p {
+		color: #fff;
+	}
+
+	#ball p.center-first::before {
+		content: "[";
+		font-size: 12px;
+		font-weight: 500;
+		position: absolute;
+		height: 20px;
+		top: calc(50% - 10px);
+		left: -8px;
+		line-height: 20px;
+	}
+
+	#ball p.center-first::after {
+		content: "]";
+		font-size: 12px;
+		font-weight: 500;
+		position: absolute;
+		height: 20px;
+		top: calc(50% - 10px);
+		right: -8px;
+		line-height: 20px;
+	}
+</style>

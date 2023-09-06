@@ -1,0 +1,18 @@
+---
+import { changeLanguage } from "i18next";
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import BackgroundEffect from "@components/BackgroundEffect.astro";
+import O3D from "@components/O3D.astro";
+import Projects from "@components/Projects.astro";
+
+changeLanguage("en");
+
+const portfolioItems = await getCollection("portfolio");
+---
+
+<Layout>
+	<BackgroundEffect opacity={100} />
+	<O3D />
+	<Projects items={portfolioItems} />
+</Layout>

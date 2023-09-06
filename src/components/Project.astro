@@ -1,0 +1,92 @@
+---
+import Title from "@components/Title.astro";
+
+const { item, full } = Astro.props;
+
+var {
+	data: {
+		title,
+		image: { src: imageSrc },
+		snippet,
+	},
+	slug,
+} = item;
+---
+
+<style>
+	.tilt {
+		box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0.4);
+		transform-style: preserve-3d;
+		transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+
+		&:hover {
+			box-shadow: 0 40px 70px -15px rgba(0, 0, 0, 0.5);
+
+			.inner {
+				transform: translateX(-50%) translateY(-50%) translateZ(5px);
+				transition-duration: 300ms;
+			}
+		}
+
+		.inner {
+			background: repeating-linear-gradient(27deg,rgba(255,255,255,0.2) 0px,rgba(150,150,150,0.2) 125px,rgba(255,255,255,0.2) 195px);
+			border-radius: 3px;
+			-webkit-backdrop-filter: blur(20px) brightness(1.2);
+			backdrop-filter: blur(20px) brightness(1.2);
+			width: 100%;
+			max-width: 930px;
+			height: 100px;
+			max-height: 275px;
+			padding: 50px;
+			box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 1px 12px rgba(0,0,0,0.1);
+			border: 1px solid rgba(255,255,255,0.2);
+
+			p {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+	}
+</style>
+
+<div class=`mx-auto w-full flex flex-1 relative` transition:name={`project-${slug}`} transition:animate="initial">
+	<a class=`flex w-full ${full ? 'cursor-default lg:h-[32rem] rounded-b-lg' : 'tilt cursor-pointer lg:h-[26rem]'}` href={`/portfolio/${slug}`}>
+		<div class=`flex flex-col w-full bg-stone-100 shadow ${full ? 'rounded-b-lg' : ''}`>
+			<div class=`max-h-full w-full ${full ? 'rounded-b-lg' : ''}`>
+				<img class=`max-h-full w-full object-cover object-top ${full ? 'rounded-b-lg' : ''}` src={imageSrc} loading="lazy" />
+			</div>
+		</div>
+		{
+			!full && (
+				<div class="inner flex w-full justify-center items-center text-md md:text-xl lg:text-3xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bottom-0 mb-6 px-4 py-4 sm:px-6 text-white">
+					<p class="font-semibold"><Title {title} /></p>
+					<!--<p>{snippet}</p>-->
+				</div>
+			)
+		}
+	</a>
+</div>
+
+<script>
+	import VanillaTilt from "vanilla-tilt";
+
+	document.addEventListener("astro:page-load", function () {
+		const tilt = document.querySelectorAll(".tilt");
+		VanillaTilt.init(tilt, {
+			reverse: true,
+			max: 0.2,
+			speed: 1000,
+			scale: 1.02,
+			reset: true,
+			perspective: 300,
+			transition: true,
+			"glare-prerender": false,
+			gyroscope: true,
+			gyroscopeMinAngleX: -40,
+			gyroscopeMaxAngleX: 40,
+			gyroscopeMinAngleY: -40,
+			gyroscopeMaxAngleY: 40,
+		});
+	});
+</script>

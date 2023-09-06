@@ -1,0 +1,5 @@
+---
+let { title } = Astro.props;
+---
+
+<span transition:name={`title-${title}`} transition:animate="initial">{title}</span>

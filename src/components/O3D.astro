@@ -1,0 +1,125 @@
+---
+
+---
+
+<div class="name flex flex-row items-center justify-center text-stone-800 relative z-10 opacity-90 h-screen font-bold text-7xl lg:text-[14rem]">
+	STUDI<div class="o3d-text w-20 h-20 lg:w-[15rem] lg:h-[15rem]"></div>
+</div>
+
+<style>
+	.o3d-text canvas {
+		width: 100% !important;
+		height: 100% !important;
+		background: transparent;
+	}
+</style>
+
+<script>
+	import * as THREE from "three";
+	import { gsap } from "gsap";
+
+	document.addEventListener("astro:page-load", function () {
+		// Define the O3D component
+		function O3D($o3d, theme) {
+			const elements = {
+				scene: new THREE.Scene(),
+				camera: new THREE.PerspectiveCamera(45, window.innerWidth / window.innerWidth, 1, 10000),
+				renderer: new THREE.WebGLRenderer({ antialias: true, alpha: true }),
+				mesh: null,
+			};
+
+			const colors = {
+				dark: {
+					meshColor: 0xffffff,
+				},
+				light: {
+					meshColor: 0x141414,
+				},
+			}[theme];
+
+			let { scene, camera, renderer, mesh } = elements;
+
+			let currentTheme = "light";
+
+			if (currentTheme !== theme) {
+				if (mesh) {
+					mesh.material.setValues({
+						color: colors.meshColor,
+					});
+				}
+				renderer.render(scene, camera);
+				currentTheme = theme;
+				return;
+			}
+
+			//initial
+			renderer.setSize($o3d.clientWidth, $o3d.clientHeight);
+			renderer.setClearColor(0xffffff, 0);
+			renderer.setPixelRatio(window.innerWidth / window.innerWidth);
+			$o3d.append(renderer.domElement);
+			camera.position.set(0, 0, 1000);
+
+			//create mesh
+			let geometry = new THREE.DodecahedronGeometry(350, 0);
+			let material = new THREE.MeshLambertMaterial({
+				color: colors.meshColor,
+			});
+			mesh = new THREE.Mesh(geometry, material);
+			elements.mesh = mesh;
+			scene.add(mesh);
+
+			//light
+			let light = new THREE.AmbientLight(0xfffffa, 0.5);
+			scene.add(light);
+			let light1 = new THREE.DirectionalLight(0xfffffa, 3);
+			scene.add(light1);
+			light1.position.set(400, 200, 0);
+
+			renderer.render(scene, camera);
+			const animate = function () {
+				renderer.render(scene, camera);
+				requestAnimationFrame(animate);
+			};
+			animate();
+
+			const handlePointerMove = ({ clientX, clientY }) => {
+				const centerPoint = {
+					x: window.innerWidth / 2,
+					y: window.innerHeight / 2,
+				};
+				const z = (clientX - centerPoint.x) / 800;
+				const x = (clientY - centerPoint.y) / 800;
+				gsap.to(mesh.rotation, {
+					x: -x,
+					z: -z,
+					y: x,
+					duration: 1,
+					ease: "power1.out",
+					onUpdate: renderer.render(scene, camera),
+				});
+			};
+
+			const handleDeviceOrientation = ({ acceleration, accelerationIncludingGravity }) => {
+				const { x, y } = accelerationIncludingGravity || acceleration;
+				gsap.to(mesh.rotation, {
+					x: Math.floor(-y) / 3,
+					y: Math.floor(-x) / 3,
+					duration: 1,
+					ease: "power1.out",
+					onUpdate: renderer.render(scene, camera),
+				});
+			};
+
+			window.addEventListener("pointermove", handlePointerMove);
+			window.addEventListener("devicemotion", handleDeviceOrientation, true);
+
+			return $o3d;
+		}
+
+		const $o3ds = document.getElementsByClassName("o3d-text");
+
+		Array.from($o3ds).forEach((element) => {
+			O3D(element, "light");
+		});
+	});
+</script>

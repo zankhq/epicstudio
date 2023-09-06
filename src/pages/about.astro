@@ -1,0 +1,145 @@
+---
+import Container from "@components/Container.astro";
+import Layout from "@layouts/Layout.astro";
+
+let team = [
+	{
+		name: "Breadpool",
+		imageSrc: "/images/members/Breadpool.png",
+		role: "Professional Baker",
+	},
+	{
+		name: "Dino Potter",
+		imageSrc: "/images/members/dino_potter.png",
+		role: "Business owner",
+	},
+	{
+		name: "Spider Cow",
+		imageSrc: "/images/members/spider_cow.png",
+		role: "Cooking Teacher",
+	},
+	{
+		name: "Captain Celest",
+		imageSrc: "/images/members/captain_celestia.png",
+		role: "Professional Baker",
+	},
+];
+---
+
+<Layout>
+	<Container class="pt-28">
+		<div class="text-center lg:text-left lg:flex lg:items-end lg:justify-between">
+			<div>
+				<h2 class="tracking-tighter text-stone-800">
+					<span class="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-9xl">About</span>
+				</h2>
+				<p class="max-w-md mx-auto lg:mx-0 mt-6 text-lg font-normal leading-8 text-opacity-50 text-stone-800">
+					Tortor, eget vitae at malesuada donec. Egestas et tincidunt dictumst non.
+				</p>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-2 gap-6 sm:gap-8 mt-12 md:mt-16 text-center lg:grid-cols-4">
+			{
+				team.map((member) => (
+					<div class="relative overflow-hidden">
+						<div class="aspect-w-3 aspect-h-5">
+							<img class="object-cover w-full h-full" src={member.imageSrc} alt={`member-${member.name}-image`} />
+						</div>
+						<div class="inset-x-0 bottom-0 bg-stone-800 h-20">
+							<div class="px-4 py-6 flex items-start flex-col justify-center h-full">
+								<p class="sm:text-2xl text-stone-100 font-bold">{member.name}</p>
+								<p class="text-sm text-stone-100">{member.role}</p>
+							</div>
+						</div>
+					</div>
+				))
+			}
+		</div>
+		<div class="mx-auto">
+			<div class="mt-10">
+				<svg
+					class="w-auto h-4 text-gray-300"
+					width="172"
+					height="16"
+					viewBox="0 0 172 16"
+					fill="none"
+					stroke="currentColor"
+					xmlns="http://www.w3.org/2000/svg">
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 11 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 46 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 81 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 116 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 151 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 18 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 53 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 88 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 123 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 158 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 25 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 60 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 95 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 130 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 165 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 32 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 67 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 102 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 137 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 172 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 39 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 74 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 109 1)"></line>
+					<line y1="-0.5" x2="18.0278" y2="-0.5" transform="matrix(-0.5547 0.83205 0.83205 0.5547 144 1)"></line>
+				</svg>
+			</div>
+
+			<div class="mt-10">
+				<p class="text-base font-normal leading-7 text-stone-700 font-pj">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa risus sed eget ornare posuere turpis vitae. Id elementum velit
+					posuere vestibulum lectus id eu sollicitudin. Tellus amet bibendum sit mus phasellus quis duis lacus. Enim eget sagittis, auctor
+					iaculis nulla semper. In vitae neque integer integer metus, est, tristique fermentum tristique.
+				</p>
+
+				<h2 class="mt-12 text-3xl font-bold text-stone-900 font-pj">Get everything from scratch</h2>
+				<p class="mt-6 text-base font-normal leading-7 text-stone-700 font-pj">
+					Massa risus sed eget ornare posuere turpis vitae. Id elementum velit posuere vestibulum lectus id eu sollicitudin. Tellus amet
+					bibendum sit mus phasellus quis duis lacus. Enim eget sagittis, auctor iaculis nulla semper. In vitae neque integer integer metus,
+					est, tristique fermentum tristique.
+				</p>
+				<ul class="pl-5 mt-6 space-y-1 text-base font-normal leading-7 text-stone-700 list-disc list-outside font-pj">
+					<li>Id elementum velit posuere vestibulum lectus id eu sollicitudin.</li>
+					<li>Tellus amet bibendum sit mus phasellus quis duis lacus.</li>
+					<li>Enim eget sagittis, auctor iaculis nulla semper.</li>
+				</ul>
+
+				<h2 class="mt-12 text-3xl font-bold text-stone-900 font-pj">Choose from 120+ UI blocks</h2>
+				<p class="mt-6 text-base font-normal leading-7 text-stone-700 font-pj">
+					Massa risus sed eget ornare posuere turpis vitae. Id elementum velit posuere vestibulum lectus id eu sollicitudin. Tellus amet
+					bibendum sit mus phasellus quis duis lacus. Enim eget sagittis, auctor iaculis nulla semper. In vitae neque integer integer metus,
+					est, tristique fermentum tristique.
+				</p>
+				<blockquote class="pl-5 mt-8 border-l-2 border-stone-900">
+					<p class="text-lg italic font-medium text-stone-900 font-pj">
+						“Tellus amet bibendum sit mus phasellus quis duis lacus. Enim eget sagittis, auctor iaculis nulla semper. In vitae neque
+						integer integer metus, est, tristique fermentum tristique.”
+					</p>
+				</blockquote>
+
+				<h2 class="mt-16 text-3xl font-bold text-stone-900 font-pj">Create your first landing page</h2>
+				<p class="mt-6 text-base font-normal leading-7 text-stone-700 font-pj">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Risus enim id habitasse nunc at turpis vestibulum pretium ridiculus.
+					Tempus, amet mattis purus molestie urna. Tellus amet nisl, vel eget tincidunt. Viverra libero, etiam rhoncus amet, vulputate et
+					sodales.
+				</p>
+				<p class="mt-6 text-base font-normal leading-7 text-stone-700 font-pj">
+					Cras hendrerit porta donec tincidunt sed elit dictum tellus. Quam aenean elit pretium risus. Ullamcorper proin interdum dui amet
+					eleifend. Justo, morbi elit amet sollicitudin eget felis amet leo.
+				</p>
+				<p class="mt-6 text-base font-normal leading-7 text-stone-700 font-pj">
+					Ac pretium tellus id ut. Netus sed consequat aliquet sed sed. Platea ac nunc ut curabitur et. In tristique montes, aenean nibh
+					tempus viverra.
+				</p>
+			</div>
+		</div>
+	</Container>
+</Layout>
