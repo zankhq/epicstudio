@@ -1,10 +1,10 @@
 import type { Site } from "../types/site";
 
 export const SITE: Site = {
-	url: "https://zank.studio",
+	url: "https://epicstudio.zank.studio",
 	author: "Giulio Zanchetta",
-	name: "astro-starter",
-	description: "Astro starter with tailwind, alpine and i18n support.",
-	title: "astro-starter",
+	name: "epicstudio",
+	description: "Astro template with tailwind, alpine and i18n support.",
+	title: "Epicstudio",
 	ogImage: "og.png",
 };

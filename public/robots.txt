@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://zank.studio/sitemap-index.xml
+Sitemap: http://epicstudio.zank.studio/sitemap-index.xml

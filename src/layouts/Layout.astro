@@ -19,7 +19,7 @@ const resolvedImageWithDomain = new URL("/meta/opengraph.png", Astro.site).toStr
 
 const { title, lang = null } = Astro.props;
 
-const makeTitle = title ? title + " | " + "Astro starter" : "Astro starter template with Tailwind CSS and alpine js";
+const makeTitle = title ? title + " | " + "Astro template" : "Astro template with tailwind, alpine and i18n support";
 ---
 
 <!doctype html>
@@ -39,7 +39,7 @@ const makeTitle = title ? title + " | " + "Astro starter" : "Astro starter templ
 
 		<SEO
 			title={makeTitle}
-			description="Astro starter template with TailwindCSS and alpine js."
+			description="Astro template with tailwind, alpine and i18n support"
 			canonical={canonicalURL}
 			openGraph={{
 				basic: {
