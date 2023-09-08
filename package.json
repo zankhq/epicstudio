@@ -19,7 +19,7 @@
 		"@astrojs/rss": "^3.0.0",
 		"@fontsource-variable/inter": "^5.0.8",
 		"alpinejs": "^3.13.0",
-		"astro": "^3.0.8",
+		"astro": "^3.0.12",
 		"astro-i18next": "^1.0.0-beta.21",
 		"astro-netlify-cms": "^0.5.4",
 		"astro-seo": "^0.8.0",
@@ -31,7 +31,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/alpinejs": "^0.3.0",
-		"@astrojs/mdx": "^1.0.0",
+		"@astrojs/mdx": "^1.0.3",
 		"@astrojs/sitemap": "^3.0.0",
 		"@astrojs/tailwind": "^5.0.0",
 		"@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
@@ -45,5 +45,8 @@
 		"prettier": "3.0.3",
 		"prettier-plugin-astro": "^0.12.0",
 		"workbox-window": "^7.0.0"
+	},
+	"peerDependencies": {
+		"i18next-fs-backend": "latest"
 	}
 }
